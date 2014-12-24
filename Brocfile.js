@@ -1,48 +1,34 @@
-var compileSass = require('broccoli-sass'),
-    concatenate = require('broccoli-concat'),
-    mergeTrees = require('broccoli-merge-trees'),
+// Brocfile.js
+var concat = require('broccoli-concat'),  
     pickFiles = require('broccoli-static-compiler'),
-    uglifyJs = require('broccoli-uglify-js'),
-    filterReact = require('broccoli-react'),
-    app = 'app',
-    appCss,
-    appHtml,
-    appJs;
+    mergeTrees = require('broccoli-merge-trees'),
+    filterReact = require('broccoli-react');
 
-/** 
- * move the index.html file from the project /app folder
- * into the build production folder
- */
-appHtml = pickFiles(app, {
-    srcDir: '/',
-    files: ['index.html'],
-    destDir: '/production'
+// handle jsx files
+var jsxs = concat('app/',{
+    inputFiles: ['**/*.jsx'],
+    outputFile: '/assets/reacts.js'
 });
+jsxs = filterReact(jsxs,{extensions: ['js'], transform: { harmony: true }});
 
-/**
- * concatenate and compress all of our JavaScript files in
- * the project /app folder into a single app.js file in
- * the build production folder
- */
-appJs = filterReact(appJs,{extensions: ['js'], transform: { harmony: true }});
-appJs = concatenate(app, {
-    inputFiles: ['**/*.js'],
-    outputFile: '/production/app.js',
-    header: '/** Copyright shoobah. 2014 **/'
+// concat the JS
+var scripts = concat('app/', {  
+  inputFiles: ['**/*.js'],
+  outputFile: '/assets/scripts.js'
 });
-appJs = uglifyJs(appJs, {
-    compress: true
+// concat the CSS
+var styles = concat('app/styles', {  
+  inputFiles: ['**/*.css'],
+  outputFile: '/assets/styles.css'
 });
-
-/**
- * compile all of the SASS in the project /resources folder into
- * a single app.css file in the build production/resources folder
- */
-appCss = compileSass(
-    ['resources/sass'],
-    '/app.scss',
-    'production/resources/app.css'
-);
-
-// merge HTML, JavaScript and CSS trees into a single tree and export it
-module.exports = mergeTrees([appHtml, appJs, appCss]);
+// grap any static assets
+var public = pickFiles('public', {  
+  srcDir: '.',
+  destDir: '.'
+});
+var vendor = pickFiles('bower_components',{
+    srcDir: '.',
+    destDir: '/assets/vendor'
+});
+// and merge all the trees together
+module.exports = mergeTrees([scripts, jsxs, styles, public, vendor]);  
