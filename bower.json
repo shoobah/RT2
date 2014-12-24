@@ -1,0 +1,20 @@
+{
+  "name": "RT2",
+  "version": "0.0.1",
+  "authors": [
+    "Anders Sjöberg <shoobah@gmail.com>"
+  ],
+  "main": "index.html",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "react": "~0.12.2"
+  }
+}
