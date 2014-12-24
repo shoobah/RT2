@@ -12,10 +12,10 @@ var jsxs = concat('app/',{
 jsxs = filterReact(jsxs,{extensions: ['js'], transform: { harmony: true }});
 
 // concat the JS
-var scripts = concat('app/', {  
-  inputFiles: ['**/*.js'],
-  outputFile: '/assets/scripts.js'
-});
+// var scripts = concat('app/', {  
+//   inputFiles: ['**/*.js'],
+//   outputFile: '/assets/scripts.js'
+// });
 // concat the CSS
 var styles = concat('app/styles', {  
   inputFiles: ['**/*.css'],
@@ -31,4 +31,4 @@ var vendor = pickFiles('bower_components',{
     destDir: '/assets/vendor'
 });
 // and merge all the trees together
-module.exports = mergeTrees([scripts, jsxs, styles, public, vendor]);  
+module.exports = mergeTrees([jsxs, styles, public, vendor]);  
