@@ -1,19 +1,21 @@
 (function(){
 	var HelloMessage = React.createClass({
-  render: function() {
+  	render: function() {
     return <div>Hello {this.props.name}</div>;
-  }
-});
+  			}
+				});
+	var Alert = require('react-bootstrap/Alert');
 
 var Timer = React.createClass({
   getInitialState: function() {
-    return {secondsElapsed: -7};
+    return {secondsElapsed: 0};
   },
   tick: function() {
-    this.setState({secondsElapsed: this.state.secondsElapsed + 0.1});
+  	var time=this.state.secondsElapsed + 1;
+    this.setState({secondsElapsed: time});
   },
   componentDidMount: function() {
-    this.interval = setInterval(this.tick, 100);
+    this.interval = setInterval(this.tick, 1000);
   },
   componentWillUnmount: function() {
     clearInterval(this.interval);
@@ -27,7 +29,7 @@ var Timer = React.createClass({
 
 React.render(
 		<div>
-			<HelloMessage name="doe" />
+			<HelloMessage name="Mr Anderson" />
 			<Timer />
 		</div>
 		, mountNode);

@@ -11,17 +11,7 @@ var jsxs = concat('app/',{
 });
 jsxs = filterReact(jsxs,{extensions: ['js'], transform: { harmony: true }});
 
-// concat the JS
-// var scripts = concat('app/', {  
-//   inputFiles: ['**/*.js'],
-//   outputFile: '/assets/scripts.js'
-// });
-// concat the CSS
-var styles = concat('app/styles', {  
-  inputFiles: ['**/*.css'],
-  outputFile: '/assets/styles.css'
-});
-// grap any static assets
+// grab any static assets
 var public = pickFiles('public', {  
   srcDir: '.',
   destDir: '.'
