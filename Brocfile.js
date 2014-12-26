@@ -2,23 +2,35 @@
 var concat = require('broccoli-concat'),  
     pickFiles = require('broccoli-static-compiler'),
     mergeTrees = require('broccoli-merge-trees'),
-    filterReact = require('broccoli-react');
+    instrument = require('broccoli-debug').instrument,
+    filterReact = require('broccoli-react'),
+    browserify = require('broccoli-browserify');
+
+var jox = pickFiles('app',{
+    srcDir: '.',
+   	files:['**/*.js'],
+    destDir: '/assets/js'
+});
+
+jox = instrument.print(jox);
+
+jsxs = filterReact(jox,{extensions: ['js'], transform: { harmony: true }});
+jsxs = instrument.print(jsxs);
 
 // handle jsx files
-var jsxs = concat('app/',{
-    inputFiles: ['**/*.jsx'],
-    outputFile: '/assets/reacts.js'
+var browserified = browserify(jsxs,{
+	entries: ['./assets/js/main.js']
 });
-jsxs = filterReact(jsxs,{extensions: ['js'], transform: { harmony: true }});
+
+browserified = instrument.print(browserified);
 
 // grab any static assets
 var public = pickFiles('public', {  
   srcDir: '.',
   destDir: '.'
 });
-var vendor = pickFiles('bower_components',{
-    srcDir: '.',
-    destDir: '/assets/vendor'
-});
+
+public = instrument.print(public);
+
 // and merge all the trees together
-module.exports = mergeTrees([jsxs, styles, public, vendor]);  
+module.exports = mergeTrees([jox, browserified, public], {overwrite: true});  

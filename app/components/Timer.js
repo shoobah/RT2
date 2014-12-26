@@ -1,10 +1,5 @@
-(function(){
-	var HelloMessage = React.createClass({
-  	render: function() {
-    return <div>Hello {this.props.name}</div>;
-  			}
-				});
-	var Alert = require('react-bootstrap/Alert');
+/** @jsx React.DOM */
+var React = require('react');
 
 var Timer = React.createClass({
   getInitialState: function() {
@@ -27,10 +22,4 @@ var Timer = React.createClass({
   }
 });
 
-React.render(
-		<div>
-			<HelloMessage name="Mr Anderson" />
-			<Timer />
-		</div>
-		, mountNode);
-})();
+module.exports = Timer;
