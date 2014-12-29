@@ -1,10 +1,9 @@
 /** @jsx React.DOM */
 
 var React = require('react');
-	// Timer = require('./components/Timer'),
-	HelloMessage = require('./components/HelloMessage');
+	HelloMessage = require('./components/Form');
 
-React.renderComponent(
-		<HelloMessage />,
+React.render(
+		<Form />,
 		document.getElementById('app')
 	);

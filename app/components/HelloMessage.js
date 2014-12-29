@@ -1,10 +1,16 @@
 /** @jsx React.DOM */
 
-var React = require('react');
+var React = require('react'),
+	Timer = require('./Timer');
 
 var HelloMessage = React.createClass({
 	render: function() {
-		return <div>Hello sune</div>;
+		return (
+			<div>
+				<h1>Hello Sune</h1>
+				<Timer />
+			</div>
+		);
 	}
 });
 

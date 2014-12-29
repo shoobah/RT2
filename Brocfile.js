@@ -1,36 +1,51 @@
 // Brocfile.js
-var concat = require('broccoli-concat'),  
+var concat = require('broccoli-concat'),
     pickFiles = require('broccoli-static-compiler'),
     mergeTrees = require('broccoli-merge-trees'),
-    instrument = require('broccoli-debug').instrument,
     filterReact = require('broccoli-react'),
     browserify = require('broccoli-browserify');
 
-var jox = pickFiles('app',{
+var appJsFiles = pickFiles('app', {
     srcDir: '.',
-   	files:['**/*.js'],
+    files: ['**/*.js'],
     destDir: '/assets/js'
 });
 
-jox = instrument.print(jox);
-
-jsxs = filterReact(jox,{extensions: ['js'], transform: { harmony: true }});
-jsxs = instrument.print(jsxs);
+jsxs = filterReact(appJsFiles, {
+    extensions: ['js'],
+    transform: {
+        harmony: true
+    }
+});
 
 // handle jsx files
-var browserified = browserify(jsxs,{
-	entries: ['./assets/js/main.js']
+var browserified = browserify(jsxs, {
+    entries: ['./assets/js/main.js']
 });
-
-browserified = instrument.print(browserified);
 
 // grab any static assets
-var public = pickFiles('public', {  
-  srcDir: '.',
-  destDir: '.'
+var public = pickFiles('public', {
+    srcDir: '.',
+    destDir: '.'
 });
 
-public = instrument.print(public);
+var bootstrap = pickFiles('./node_modules/bootstrap/dist', {
+    srcDir: '.',
+    destDir: '/assets/bootstrap'
+});
+
+var jQuery = pickFiles('./node_modules/jquery/dist', {
+    srcDir: '.',
+    destDir: '/assets/jquery'
+});
 
 // and merge all the trees together
-module.exports = mergeTrees([jox, browserified, public], {overwrite: true});  
+module.exports = mergeTrees([
+    appJsFiles,
+    browserified,
+    public,
+    bootstrap,
+    jQuery
+], {
+    overwrite: true
+});
